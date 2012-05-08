@@ -1,0 +1,7 @@
+{
+	"name": "cmd-conf",
+	"description": "A command line analyser for Node.JS",
+	"author": "Vincent Peybernes <vpeybernes.pro@gmail.com>",
+	"url": "https://github.com/Techniv/node-cmd-conf",
+	"main": "index"
+}
