@@ -1,4 +1,4 @@
-**CMD-CONF** is a module for Node.JS plateform. It analyse the node lauch
+**Node-CMD-Conf** is a module for Node.JS plateform. It analyse the node lauch
 commande line to extract and return parameters.
 
 This program is free software: you can redistribute it and/or modify
