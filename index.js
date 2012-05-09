@@ -1,45 +1,69 @@
+/*
+ * This file is part of Node-CMD-Conf.
+ * 
+ * Node-CMD-Conf is distributed under the terms of the 
+ * GNU General Public License version 3.0.
+ * 
+ * Node-CMD-Conf is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 
 function cmdConf(cmd){
 	var that = this;
-	that.cmd = cmd.slice(0);
-	that.cmdStr = cmd.concat();
-	that.conf = {key: {}, shortKey: {}};
-	that.regexp = /^(-{1,2})([a-zA-Z]+)$/;
+	var command = {
+		itemList: cmd.slice(0),
+		cmdStr: '',
+		args: cmd.slice(2)
+	};
+	var conf = {
+		processed: false,
+		regexp: /^(-{1,2})([a-zA-Z]+)$/,
+		key: {},
+		shortKey: {}
+	};
+	var parameters = {arguments: []};
 	
-	that.args = cmd.slice(2);
-	that.processed = false;
-	that.parameters = {arguments: []};
+	command.cmdStr = command.itemList.concat();
 
 	
 	
 	/**
 	 * Configure the command analyser.
 	 */
-	that.configure = function(conf){
-		for(var name in conf){
-			var values = conf[name];
+	that.configure = function(config){
+		
+		for(var name in config){
+			var values = config[name];
 			
 			values.name = name;
 			values.key = values.key ? values.key : name;
 			
-			that.conf.key[values.key] = values;
-			if(values.shortKey)	that.conf.shortKey[values.shortKey] = values;
+			conf.key[values.key] = values;
+			if(values.shortKey)	conf.shortKey[values.shortKey] = values;
 			
-			
+			conf.processed = false;
+			parameters = {arguments: []};
 		}
-	}
+		
+	};
 	
 	that.getParameters = function(){
-		if(!that.processed) process();
+		if(!conf.processed) process();
 		
-		return that.parameters;
-	}
+		return parameters;
+	};
 	
 	function process(){
-		var args = that.args.slice(0);
+		var args = command.args.slice(0);
 		for(var i in args){
 			var arg = args[i];
-			if(that.regexp.test(arg)){
+			if(conf.regexp.test(arg)){
 				var catchWord = RegExp.$2;
 				switch(RegExp.$1){
 					case '-': 
@@ -53,11 +77,11 @@ function cmdConf(cmd){
 				addArgument(arg);
 			}
 		}
-		that.processed = true
+		conf.processed = true
 	}
 	
 	function processKey(word, position, args){
-		var option = that.conf.key[word];
+		var option = conf.key[word];
 		if(!option) return;
 		
 		option.position = parseInt(position);
@@ -65,7 +89,7 @@ function cmdConf(cmd){
 	}
 	
 	function processShortKey(word, position, args){
-		var option = that.conf.shortKey[word];
+		var option = conf.shortKey[word];
 		if(!option) return;
 		
 		option.position = parseInt(position);
@@ -95,11 +119,11 @@ function cmdConf(cmd){
 	}
 	
 	function setParam(key, value){
-		that.parameters[key] = value;
+		parameters[key] = value;
 	}
 	
 	function addArgument(value){
-		that.parameters.arguments.push(value);
+		parameters.arguments.push(value);
 	}
 }
 
