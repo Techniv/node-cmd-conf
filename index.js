@@ -21,15 +21,20 @@ function cmdConf(cmd){
 		cmdStr: '',
 		args: cmd.slice(2)
 	};
+	command.cmdStr = command.itemList.join(' ');
+	
 	var conf = {
 		processed: false,
 		regexp: /^(-{1,2})([a-zA-Z]+)$/,
 		key: {},
 		shortKey: {}
 	};
-	var parameters = {arguments: []};
+	var parameters = {
+			parameters: [],
+			arguments: command.args,
+			commandStr: command.cmdStr
+	};
 	
-	command.cmdStr = command.itemList.concat();
 
 	
 	
@@ -48,11 +53,18 @@ function cmdConf(cmd){
 			if(values.shortKey)	conf.shortKey[values.shortKey] = values;
 			
 			conf.processed = false;
-			parameters = {arguments: []};
+			parameters = {
+				arguments: [],
+				cmdArguments: command.args,
+				cmdStr: command.cmdStr
+			};
 		}
 		
 	};
 	
+	/**
+	 * @return an object whith the catched parameter assotiate whith their key 
+	 */
 	that.getParameters = function(){
 		if(!conf.processed) process();
 		
