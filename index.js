@@ -131,6 +131,12 @@ function cmdConf(cmd){
 	
 	function getCmdParam(start, num, args){
 		var params = args.splice(start,num);
+		for(var i in params){
+			var param = params[i];
+			if(/^[0-9]+(?:(\.)[0-9]+)?$/.test(param)){
+				params[i] = (RegExp.$1 == '.')? parseFloat(param) : parseInt(param); 
+			}
+		}
 		return num == 1 ? params[0] : params;
 	}
 	
