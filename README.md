@@ -23,6 +23,7 @@ server.js
 			shortKey: 'p',		// Configure the short key
 			action: 'get',		// Define action to get parameters in commande line.
 			number: 1			// Define the number of parameters to get. (They must be consecutive)
+			defaultValue: 85	// If the parameter not given, use the default value;
 		},
 		
 		verbose:{

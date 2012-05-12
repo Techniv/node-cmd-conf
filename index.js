@@ -43,6 +43,13 @@ function cmdConf(cmd){
 	 */
 	that.configure = function(config){
 		
+		conf.processed = false;
+		parameters = {
+			arguments: [],
+			cmdArguments: command.args,
+			cmdStr: command.cmdStr
+		};
+		
 		for(var name in config){
 			var values = config[name];
 			
@@ -52,14 +59,11 @@ function cmdConf(cmd){
 			conf.key[values.key] = values;
 			if(values.shortKey)	conf.shortKey[values.shortKey] = values;
 			
-			conf.processed = false;
-			parameters = {
-				arguments: [],
-				cmdArguments: command.args,
-				cmdStr: command.cmdStr
-			};
+			
+			if(values.defaultValue !== undefined) setParam(name, values.defaultValue);
 		}
 		
+		return that;
 	};
 	
 	/**
