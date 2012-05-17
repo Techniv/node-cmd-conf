@@ -1,8 +1,8 @@
 {
 	"name": "cmd-conf",
 	"description": "A command line analyser for Node.JS",
-	"version": "0.1.0",
-	"author": "Vincent Peybernes <vpeybernes.pro@gmail.com>",
+	"version": "0.1.2",
+	"author": "Vincent Peybernes [Techniv] <vpeybernes.pro@gmail.com>",
 	"url": "https://github.com/Techniv/node-cmd-conf",
 	"repository": {"type": "git", "url": "https://github.com/Techniv/node-cmd-conf.git"},
 	

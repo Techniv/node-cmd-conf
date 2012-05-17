@@ -50,6 +50,10 @@ function cmdConf(cmd){
 			cmdStr: command.cmdStr
 		};
 		
+		if(typeof config == "string"){
+			config = getConfigFromFile(config);
+		}
+		
 		for(var name in config){
 			var values = config[name];
 			
@@ -146,6 +150,26 @@ function cmdConf(cmd){
 	
 	function addArgument(value){
 		parameters.arguments.push(value);
+	}
+	
+	function getConfigFromFile(filePath){
+		console.info('Read cmd-conf configurtion from '+filePath);
+		var fs = require('fs');
+		var path = require('path');
+		try{
+			filePath = path.resolve(process.cwd,filePath);
+			var content = fs.readFileSync(filePath).toString();
+		} catch(err){
+			console.error(err.name+': Can\'t read file \''+filePath+'\'');
+			return;
+		}
+		try{
+			content = JSON.parse(content);
+		} catch (err){
+			console.error(err.name+': The JSON file is\'nt correctly formed');
+			return;
+		}
+		return content;
 	}
 }
 
