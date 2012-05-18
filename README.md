@@ -38,6 +38,9 @@ server.js
 	var myPort = params.listenPort;
 	var verbose = params.verbose;
 ```
+If you give a simple string to the `configure()` method, witch epresente the path of 
+a JSON file, cmd-conf try to resolv path and load config from this file.
+
 
 -----------------------------------------------------------------
 _More information comming soon_

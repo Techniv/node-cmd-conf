@@ -54,23 +54,23 @@ function cmdConf(cmd){
 			config = getConfigFromFile(config);
 		}
 		
+		if(config._options){
+			options = config.options;
+			delete config._options;
+		}
+		
 		for(var name in config){
-			var values = config[name];
+			var item = config[name];
+			item.name = name;
 			
-			values.name = name;
-			values.key = values.key ? values.key : name;
-			
-			conf.key[values.key] = values;
-			if(values.shortKey)	conf.shortKey[values.shortKey] = values;
-			
-			
-			if(values.defaultValue !== undefined) setParam(name, values.defaultValue);
+			processConfItem(item);
 		}
 		
 		return that;
 	};
 	
 	/**
+	 * Get the parameters
 	 * @return an object whith the catched parameter assotiate whith their key 
 	 */
 	that.getParameters = function(){
@@ -78,6 +78,35 @@ function cmdConf(cmd){
 		
 		return parameters;
 	};
+	
+	function processConfItem(item){
+		
+		switch(item.action){
+			case 'get':
+				if(item.number == undefined){
+					console.error('The number of get action is\' defined for \''+item.name+'\'.');
+					return false;
+				}
+				break;
+			case 'set':
+				if(item.value == undefined){
+					console.warn('The set value of \''+item.name+' is not defined. Use true.');
+					item.value = true;
+				}
+				break;
+			default:
+				console.error('The config property '+item.name+' has no action');
+				return false;
+				break;
+		}
+		
+		conf.key[item.key] = item;
+		if(item.shortKey)	conf.shortKey[item.shortKey] = item;
+		
+		
+		if(item.defaultValue !== undefined) setParam(item.name, item.defaultValue);
+		return true;
+	}
 	
 	function process(){
 		var args = command.args.slice(0);
@@ -156,8 +185,12 @@ function cmdConf(cmd){
 		console.info('Read cmd-conf configurtion from '+filePath);
 		var fs = require('fs');
 		var path = require('path');
+		var filePath = path.resolve(process.cwd,filePath);
+		if(!path.existsSync(filePath)){
+			console.error('Can\'t find '+filePath);
+			return;
+		}
 		try{
-			filePath = path.resolve(process.cwd,filePath);
 			var content = fs.readFileSync(filePath).toString();
 		} catch(err){
 			console.error(err.name+': Can\'t read file \''+filePath+'\'');
