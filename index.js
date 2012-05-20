@@ -163,14 +163,20 @@ function cmdConf(cmd){
 	}
 	
 	function getCmdParam(start, num, args){
-		var params = args.splice(start,num);
+		var params = args.slice(start,num);
+		var assign = [];
 		for(var i in params){
 			var param = params[i];
-			if(/^[0-9]+(?:(\.)[0-9]+)?$/.test(param)){
-				params[i] = (RegExp.$1 == '.')? parseFloat(param) : parseInt(param); 
+			if(/^-{1,2}/.test(param)) break;
+			else{
+				if(/^[0-9]+(?:(\.)[0-9]+)?$/.test(param)){
+					params[i] = (RegExp.$1 == '.')? parseFloat(param) : parseInt(param); 
+				}
+				assign.push(params[i]);
 			}
 		}
-		return num == 1 ? params[0] : params;
+		args.splice(start,assign.length);
+		return num == 1 ? assign[0] : assign;
 	}
 	
 	function setParam(key, value){
