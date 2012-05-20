@@ -1,5 +1,5 @@
 /*
- * This file is part of Node-CMD-Conf.
+ * This file is part of Node CMD-Conf.
  * 
  * Node-CMD-Conf is distributed under the terms of the 
  * GNU General Public License version 3.0.
@@ -13,7 +13,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
+/**
+ * Node CMD-Conf.
+ * Command line analyser for Node.JS.
+ * @author Vincent Peybernes [Techniv] <vpeybernes.pro@gmail.com>
+ * @version 0.2.0
+ */
 function cmdConf(cmd){
 	var that = this;
 	var command = {
