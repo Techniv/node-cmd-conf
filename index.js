@@ -17,7 +17,7 @@
  * Node CMD-Conf.
  * Command line analyser for Node.JS.
  * @author Vincent Peybernes [Techniv] <vpeybernes.pro@gmail.com>
- * @version 0.2.0
+ * @version 0.2.1
  */
 function cmdConf(cmd){
 	var that = this;
@@ -168,7 +168,8 @@ function cmdConf(cmd){
 	}
 	
 	function getCmdParam(start, num, args){
-		var params = args.slice(start,num);
+		var params = args.slice(start,start+num);
+		console.log(params);
 		var assign = [];
 		for(var i in params){
 			var param = params[i];
@@ -177,10 +178,13 @@ function cmdConf(cmd){
 				if(/^[0-9]+(?:(\.)[0-9]+)?$/.test(param)){
 					params[i] = (RegExp.$1 == '.')? parseFloat(param) : parseInt(param); 
 				}
+				console.log(assign+' '+i+': '+param[i]);
 				assign.push(params[i]);
 			}
 		}
+		console.log(assign);
 		args.splice(start,assign.length);
+		console.log(assign);
 		return num == 1 ? assign[0] : assign;
 	}
 	
