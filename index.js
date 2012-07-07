@@ -197,7 +197,7 @@ function cmdConf(cmd){
 		var fs = require('fs');
 		var path = require('path');
 		var filePath = path.resolve(process.cwd,filePath);
-		if(!path.existsSync(filePath)){
+		if(!fs.existsSync(filePath)){
 			console.error('Can\'t find '+filePath);
 			return;
 		}
