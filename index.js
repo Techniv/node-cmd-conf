@@ -17,9 +17,10 @@
  * Node CMD-Conf.
  * Command line analyser for Node.JS.
  * @author Vincent Peybernes [Techniv] <vpeybernes.pro@gmail.com>
- * @version 0.2.1
+ * @version 0.3.0
  */
 function cmdConf(cmd){
+	var _path = require('path');
 	var that = this;
 	var command = {
 		itemList: cmd.slice(0),
@@ -29,11 +30,15 @@ function cmdConf(cmd){
 	command.cmdStr = command.itemList.join(' ');
 	
 	var conf = {
+		appPath: _path.dirname(global.process.mainModule.filename),
+		defaultConfigFile: './config.json',
 		processed: false,
+		configured: false,
 		regexp: /^(-{1,2})([a-zA-Z]+)$/,
 		key: {},
 		shortKey: {}
 	};
+	console.log(conf.appPath);
 	var parameters = {
 			parameters: [],
 			arguments: command.args,
@@ -55,6 +60,7 @@ function cmdConf(cmd){
 			cmdStr: command.cmdStr
 		};
 		
+		if(typeof config == 'undefined') config = conf.defaultConfigFile;
 		if(typeof config == "string"){
 			config = getConfigFromFile(config);
 		}
@@ -71,6 +77,7 @@ function cmdConf(cmd){
 			processConfItem(item);
 		}
 		
+		conf.configured = true;
 		return that;
 	};
 	
@@ -114,6 +121,7 @@ function cmdConf(cmd){
 	}
 	
 	function process(){
+		if (!conf.configured) that.configure();
 		var args = command.args.slice(0);
 		for(var i in args){
 			var arg = args[i];
@@ -195,8 +203,8 @@ function cmdConf(cmd){
 	function getConfigFromFile(filePath){
 		console.info('Read cmd-conf configurtion from '+filePath);
 		var fs = require('fs');
-		var path = require('path');
-		var filePath = path.resolve(process.cwd,filePath);
+		var path = _path;
+		filePath = path.resolve(conf.appPath,filePath);
 		if(!fs.existsSync(filePath)){
 			console.error('Can\'t find '+filePath);
 			return;
