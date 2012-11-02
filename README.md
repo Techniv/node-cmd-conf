@@ -1,6 +1,7 @@
 Node module - **CMD-Conf**
 ==========================
-A command line analyser for Node.JS
+A command line analyser for Node.JS.
+[View NPM registry](https://npmjs.org/package/cmd-conf)
 
 This module analyses the command line syntax to extract parameters 
 and return them into an associative array.
