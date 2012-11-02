@@ -50,6 +50,8 @@ function cmdConf(cmd){
 	
 	/**
 	 * Configure the command analyser.
+	 * @param object config The config object. Can be the path to 
+	 * the config JSON file. 
 	 */
 	that.configure = function(config){
 		
@@ -82,7 +84,8 @@ function cmdConf(cmd){
 	};
 	
 	/**
-	 * Get the parameters
+	 * Get the parameters. If the module are not configured, it try to 
+	 * load the default JSON config file.
 	 * @return an object whith the catched parameter assotiate whith their key 
 	 */
 	that.getParameters = function(){
@@ -120,6 +123,9 @@ function cmdConf(cmd){
 		return true;
 	}
 	
+	/**
+	 * Fire the command line analyse
+	 */
 	function process(){
 		if (!conf.configured) that.configure();
 		var args = command.args.slice(0);
