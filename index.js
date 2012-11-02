@@ -1,3 +1,5 @@
+var logLevel = 1;
+
 /*
  * This file is part of CMD-Conf.
  * 
@@ -30,6 +32,7 @@
  * @version 0.3.0
  */
 function cmdConf(cmd){
+	var logger = new LightLogger(logLevel);
 	var _path = require('path');
 	var that = this;
 	var command = {
@@ -48,7 +51,7 @@ function cmdConf(cmd){
 		key: {},
 		shortKey: {}
 	};
-	console.log(conf.appPath);
+	
 	var parameters = {
 			parameters: [],
 			arguments: command.args,
@@ -109,18 +112,18 @@ function cmdConf(cmd){
 		switch(item.action){
 			case 'get':
 				if(item.number == undefined){
-					console.error('The number of get action is\' defined for \''+item.name+'\'.');
+					logger.error('The number of get action is\' defined for \''+item.name+'\'.');
 					return false;
 				}
 				break;
 			case 'set':
 				if(item.value == undefined){
-					console.warn('The set value of \''+item.name+' is not defined. Use true.');
+					logger.warn('The set value of \''+item.name+' is not defined. Use true.');
 					item.value = true;
 				}
 				break;
 			default:
-				console.error('The config property '+item.name+' has no action');
+				logger.error('The config property '+item.name+' has no action');
 				return false;
 				break;
 		}
@@ -217,27 +220,60 @@ function cmdConf(cmd){
 	}
 	
 	function getConfigFromFile(filePath){
-		console.info('Read cmd-conf configurtion from '+filePath);
+		logger.info('Read cmd-conf configurtion from '+filePath);
 		var fs = require('fs');
 		var path = _path;
 		filePath = path.resolve(conf.appPath,filePath);
 		if(!fs.existsSync(filePath)){
-			console.error('Can\'t find '+filePath);
+			logger.error('Can\'t find '+filePath);
 			return;
 		}
 		try{
 			var content = fs.readFileSync(filePath).toString();
 		} catch(err){
-			console.error(err.name+': Can\'t read file \''+filePath+'\'');
+			logger.error(err.name+': Can\'t read file \''+filePath+'\'');
 			return;
 		}
 		try{
 			content = JSON.parse(content);
 		} catch (err){
-			console.error(err.name+': The JSON file is\'nt correctly formed');
+			logger.error(err.name+': The JSON file is\'nt correctly formed');
 			return;
 		}
 		return content;
+	}
+}
+
+/**
+ * LightLogger using basic console log.
+ * LogLevel : 
+ * 0 Nothing
+ * 1 Error
+ * 2 Warning
+ * 3 Info
+ * 4 Debug
+ */
+function LightLogger(logLevel){
+	logger = global.console;
+	
+	this.log = function(msg){
+		if(logLevel >= 4) logger.log(msg);
+	}
+	
+	this.debbug = function(msg){
+		if(logLevel >= 4) logger.log(msg);
+	}
+	
+	this.info = function(msg){
+		if(logLevel >= 3) logger.info(msg);
+	}
+	
+	this.warn = function(msg){
+		if(logLevel >= 2) logger.warn(msg);
+	}
+	
+	this.error = function(msg){
+		if(logLevel >= 1) logger.error(msg);
 	}
 }
 
