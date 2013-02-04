@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/Techniv/node-cmd-conf.png)](http://travis-ci.org/Techniv/node-cmd-conf)
 Node module - **CMD-Conf**
 ==========================
 A command line analyser for Node.JS.
