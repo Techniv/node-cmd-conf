@@ -108,31 +108,35 @@ function cmdConf(cmd){
 	};
 	
 	function processConfItem(item){
-		
-		switch(item.action){
-			case 'get':
-				if(item.number == undefined){
-					logger.error('The number of get action is\' defined for \''+item.name+'\'.');
+
+		if(typeof item.action == 'string' && typeof item.key == 'string'){
+
+			switch(item.action){
+				case 'get':
+					if(item.number == undefined){
+						logger.error('The number of get action is\' defined for \''+item.name+'\'.');
+						return false;
+					}
+					break;
+				case 'set':
+					if(item.value == undefined){
+						logger.warn('The set value of \''+item.name+' is not defined. Use true.');
+						item.value = true;
+					}
+					break;
+				default:
+					logger.error('The config property '+item.name+' has no action');
 					return false;
-				}
-				break;
-			case 'set':
-				if(item.value == undefined){
-					logger.warn('The set value of \''+item.name+' is not defined. Use true.');
-					item.value = true;
-				}
-				break;
-			default:
-				logger.error('The config property '+item.name+' has no action');
-				return false;
-				break;
+					break;
+			}
+
+			conf.key[item.key] = item;
+			if(item.shortKey)	conf.shortKey[item.shortKey] = item;
+
+			if(item.defaultValue !== undefined) setParam(item.name, item.defaultValue);
+		} else {
+			setParam(item.name, item);
 		}
-		
-		conf.key[item.key] = item;
-		if(item.shortKey)	conf.shortKey[item.shortKey] = item;
-		
-		
-		if(item.defaultValue !== undefined) setParam(item.name, item.defaultValue);
 		return true;
 	}
 	
