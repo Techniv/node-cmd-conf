@@ -29,7 +29,7 @@ var logLevel = 1;
  * Node CMD-Conf.
  * Command line analyser for Node.JS.
  * @author Vincent Peybernes [Techniv] <vpeybernes.pro@gmail.com>
- * @version 0.3.0
+ * @version 1.0.0-beta
  */
 function cmdConf(cmd){
 	var logger = new LightLogger(logLevel);
