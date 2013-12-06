@@ -87,9 +87,8 @@ function cmdConf(cmd){
 		
 		for(var name in config){
 			var item = config[name];
-			item.name = name;
 			
-			processConfItem(item);
+			processConfItem(name, item);
 		}
 		
 		conf.configured = true;
@@ -107,7 +106,7 @@ function cmdConf(cmd){
 		return parameters;
 	};
 	
-	function processConfItem(item){
+	function processConfItem(name, item){
 
 		if(typeof item.action == 'string' && typeof item.key == 'string'){
 
@@ -129,13 +128,13 @@ function cmdConf(cmd){
 					return false;
 					break;
 			}
-
+			item.name = name;
 			conf.key[item.key] = item;
 			if(item.shortKey)	conf.shortKey[item.shortKey] = item;
 
-			if(item.defaultValue !== undefined) setParam(item.name, item.defaultValue);
+			if(item.defaultValue !== undefined) setParam(name, item.defaultValue);
 		} else {
-			setParam(item.name, item);
+			setParam(name, item);
 		}
 		return true;
 	}
