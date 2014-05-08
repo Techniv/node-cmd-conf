@@ -108,8 +108,8 @@ function cmdConf(cmd){
 	
 	function processConfItem(name, item){
 
-		if(typeof item.action == 'string' && typeof item.key == 'string'){
-
+		if(typeof item.action == 'string'){
+            if(typeof item.key != 'string') item.key = name;
 			switch(item.action){
 				case 'get':
 					if(item.number == undefined){

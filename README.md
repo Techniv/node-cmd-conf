@@ -31,7 +31,14 @@ server.js
 			shortKey: 'v',
 			action: 'set',		// Set a static value
 			value: true			// The value to set
-		}
+		},
+
+		// If de action is not define, the item is consider as a static configuration.
+		staticObject:{
+			value: true
+		},
+
+		staticString: 'foo bar'
 	});
 	
 	var params = cmdConf.getParameters();
@@ -39,9 +46,9 @@ server.js
 	var myPort = params.listenPort;
 	var verbose = params.verbose;
 ```
-If you give a simple string to the `configure()` method, witch epresente the path of 
-a JSON file, cmd-conf try to resolv path and load config from this file.
+If you give a simple string to the `configure()` method, witch represent the path of
+a JSON file, cmd-conf try to resolve path and load config from this file.
 
 
 -----------------------------------------------------------------
-_More information comming soon_
+_More information coming soon_
