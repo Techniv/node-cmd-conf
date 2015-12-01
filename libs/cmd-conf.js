@@ -185,7 +185,7 @@ function cmdConf(cmd){
 		var action = option.action;
 		switch(action){
 			case 'get':
-				var params = getCmdParam(option.position+1, option.number, args);
+				var params = getCmdParam(option.position+1, option.number, args, option.forceString);
 				setParam(name,params);
 				break;
 			case 'set':
@@ -197,14 +197,14 @@ function cmdConf(cmd){
 		}
 	}
 	
-	function getCmdParam(start, num, args){
+	function getCmdParam(start, num, args, forceString){
 		var params = args.slice(start,start+num);
 		var assign = [];
 		for(var i in params){
 			var param = params[i];
 			if(/^-{1,2}/.test(param)) break;
 			else{
-				if(/^[0-9]+(?:(\.)[0-9]+)?$/.test(param)){
+				if(!forceString && /^[0-9]+(?:(\.)[0-9]+)?$/.test(param)){
 					params[i] = (RegExp.$1 == '.')? parseFloat(param) : parseInt(param); 
 				}
 				assign.push(params[i]);
