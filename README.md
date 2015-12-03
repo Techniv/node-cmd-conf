@@ -27,7 +27,7 @@ server.js
 			defaultValue: 85	// If the parameter not given, use the default value;
 		},
 		
-		verbose:{
+		verbose:{				// If key is not define, the name is used instead
 			shortKey: 'v',
 			action: 'set',		// Set a static value
 			value: true			// The value to set
@@ -39,6 +39,14 @@ server.js
 		},
 
 		staticString: 'foo bar'
+
+		serial:{
+			shortKey: 's',
+			action: 'get',
+			number: 1
+			forceString: true		// Disable the parser to force a string value instead of an integer.
+			defaultValue: "00561"
+		}
 	});
 	
 	var params = cmdConf.getParameters();
@@ -48,7 +56,11 @@ server.js
 ```
 
 If you give a simple string to the `configure()` method, witch represent the path of
-a JSON file, cmd-conf try to resolve path and load config from this file.
+a JSON file, cmd-conf try to resolve path and load config from this file. If you not
+pass argument, cmd-conf try to get the configuration to the `config.json` file.
+
+If you call `getParameters()` before `configure()`, the configuration method wil be
+automatically fired.
 
 
 -----------------------------------------------------------------
